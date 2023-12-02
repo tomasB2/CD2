@@ -9,7 +9,7 @@ service ServiceToResume {
     // Permite a um utilizador resumir as vendas processadas
     rpc resume(NoParams) returns (FileName);
     // Permite a um utilizador obter as vendas processadas
-    rpc getSales(FileName) returns (stream FileDataWithName);
+    rpc getSales(stream FileName) returns (stream FileDataWithName);
 }
 
 message NoParams{}
