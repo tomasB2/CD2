@@ -5,11 +5,9 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import manager_server.*;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class UserApp {
@@ -46,7 +44,7 @@ public class UserApp {
                     case 2:
                         System.out.println("Name:");
                         String name = scan.next();
-                        System.out.println("Directory to save the image:");
+                        System.out.println("Directory to save the file:");
                         String dir = scan.next();
                         System.out.println("Image will be saved as a .jpg");
                         Path file = Paths.get(dir + "/" + name + ".jpg");
@@ -96,7 +94,7 @@ public class UserApp {
             System.out.println();
             System.out.println("Choose an Option?");
             op = scan.nextInt();
-        } while (!((op >= 1 && op <= 4) || op == 99));
+        } while (!((op >= 1 && op <= 2) || op == 99));
         return op;
     }
 }
