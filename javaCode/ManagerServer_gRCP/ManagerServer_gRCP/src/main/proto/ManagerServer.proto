@@ -1,0 +1,28 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "manager_server";
+
+package ManagerServer;
+
+// Serviço que permite a utilizadores resumir e obter as vendas processadas
+service ServiceToResume {
+    // Permite a um utilizador resumir as vendas processadas
+    rpc resume(NoParams) returns (FileName);
+    // Permite a um utilizador obter as vendas processadas
+    rpc getSales(FileName) returns (stream FileDataWithName);
+}
+
+message NoParams{}
+
+message FileName {
+    string name = 1;
+}
+
+message FileData {
+    bytes data = 1;
+}
+
+message FileDataWithName {
+    FileName name = 1;
+    FileData data = 2;
+}
