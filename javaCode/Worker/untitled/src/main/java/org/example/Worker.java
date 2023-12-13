@@ -1,9 +1,9 @@
 package org.example;
+
 import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.simple.SimpleLoggerFactory;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Worker {
