@@ -39,7 +39,6 @@ public class UserApp {
                     case 1:
                         System.out.println("Getting sales resume...");
                         FileDataWithName res = blockingStub.resume(NoParams.newBuilder().build());
-                        System.out.println("Sales file name: " + res.getName());
                         Files.write(Path.of(dir + "\\" + res.getName() + ".txt"), res.getData().toByteArray());
                         break;
                     default:

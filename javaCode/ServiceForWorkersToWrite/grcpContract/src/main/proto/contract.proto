@@ -14,6 +14,9 @@ service FileService {
 
   // Method to call for a resume
   rpc AskForResume(NoParams) returns (FileRequestBytes);
+
+  // Method to write to resume
+  rpc WriteResume(FileData) returns (NoParams);
 }
 
 message FileRequest {
@@ -30,6 +33,11 @@ message FileRequestBytes {
 
   // Data to be written to the file
   bytes file_data = 2;
+}
+
+message FileData {
+  // Data to be written to the file
+  string file_data = 1;
 }
 
 message FileResponse {

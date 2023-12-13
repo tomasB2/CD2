@@ -1,6 +1,7 @@
 package org.example;
 
 
+import com.google.protobuf.ByteString;
 import io.grpc.ServerBuilder;
 import serviceToWriteStubs.*;
 import io.grpc.stub.StreamObserver;
@@ -93,20 +94,46 @@ public class Server extends FileServiceGrpc.FileServiceImplBase {
 
         // send resume order to workers
 
-        // wait for response from workers
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-        FileRequestBytes response = FileRequestBytes.newBuilder()
-                .setFileName(currentResume)
-                //.setFileData()
-                .build();
-        responseObserver.onNext(response);
+        try {
+            byte[] data = readFileContentsBytes(currentResume);
+            FileRequestBytes response = FileRequestBytes.newBuilder()
+                    .setFileName(currentResume)
+                    .setFileData(ByteString.copyFrom(data))
+                    .build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void writeResume(FileData request, StreamObserver<NoParams> responseObserver) {
+        try {
+            writeFileContents(currentResume, request.getFileData());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        responseObserver.onNext(NoParams.newBuilder().build());
         responseObserver.onCompleted();
     }
 
-    private void writeFileContents(String fileName, String fileData) throws IOException {
-        try (FileWriter fileWriter = new FileWriter(path + fileName)) {
-            fileWriter.write(fileData);
+    private static void writeFileContents(String fileName, String fileData) throws IOException {
+        try (FileWriter fileWriter = new FileWriter(path + fileName, true)) {
+            fileWriter.write(fileData + "\n");
         }
+    }
+
+    private byte[] readFileContentsBytes(String fileName) throws IOException {
+        Path filePath = Paths.get(path + fileName);
+        return Files.readAllBytes(filePath);
     }
 
     private String readFileContents(String fileName) throws IOException {
