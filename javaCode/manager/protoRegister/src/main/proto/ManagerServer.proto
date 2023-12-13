@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "manager_server";
+
+package ManagerServer;
+
+// Service that allows a user to resume the processed sales
+service ServiceToResume {
+    // Allows a user to resume the processed sales
+    rpc resume(NoParams) returns (FileDataWithName);
+}
+
+message NoParams { }
+
+message FileDataWithName {
+    string name = 1;
+    bytes data = 2;
+}

@@ -11,6 +11,9 @@ service FileService {
 
   // Method to read text from a file
   rpc ReadFromFile(FileReadRequest) returns (ReadFileResponse);
+
+  // Method to call for a resume
+  rpc AskForResume(NoParams) returns (FileRequestBytes);
 }
 
 message FileRequest {
@@ -19,6 +22,14 @@ message FileRequest {
 
   // Data to be written to the file
   string file_data = 2;
+}
+
+message FileRequestBytes {
+  // File name
+  string file_name = 1;
+
+  // Data to be written to the file
+  bytes file_data = 2;
 }
 
 message FileResponse {
@@ -44,3 +55,5 @@ message ReadFileResponse {
   // Text read from the file
   string file_text = 3;
 }
+
+message NoParams { }

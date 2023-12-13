@@ -10,11 +10,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Server extends FileServiceGrpc.FileServiceImplBase {
 
-    private static String path = "C:\\placeholder\\";
-    private static int svcPort = 8500;
+    private static String currentResume = "resume";
+
+    private static String path = "D:\\ISEL\\MEIC\\CD\\trab2\\a\\";
+    private static int svcPort = 8501;
     public static void main(String[] args) {
         try {
             if (args.length > 0) svcPort = Integer.parseInt(args[0]);
@@ -78,6 +82,25 @@ public class Server extends FileServiceGrpc.FileServiceImplBase {
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
+    }
+
+    @Override
+    public void askForResume(NoParams request, StreamObserver<FileRequestBytes> responseObserver) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        currentResume = "resume-" + formattedDateTime;
+
+        // send resume order to workers
+
+        // wait for response from workers
+
+        FileRequestBytes response = FileRequestBytes.newBuilder()
+                .setFileName(currentResume)
+                //.setFileData()
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     private void writeFileContents(String fileName, String fileData) throws IOException {
