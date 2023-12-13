@@ -1,4 +1,5 @@
-package org.example.pos;
+package org.example;
+
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

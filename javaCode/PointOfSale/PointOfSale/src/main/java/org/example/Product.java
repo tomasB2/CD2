@@ -1,4 +1,4 @@
-package org.example.pos;
+package org.example;
 
 import org.json.JSONObject;
 
