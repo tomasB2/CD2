@@ -9,9 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class PointOfSale {
-    private static String IP_BROKER="localhost";
-
-    private static String exchangeName = null;
+    private static final String EXCHANGE_NAME = "Sales_Exchange";
 
     public static void main(String[] args) {
         try {
@@ -21,32 +19,30 @@ public class PointOfSale {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 
-            // Send message to exchange
-            exchangeName = readline("Exchange name");
+            //EXCHANGE_NAME = readline("Exchange name");
 
             for (;;) {
-                String messageBody = readline("Qual o texto da mensagem (exit to finish)?");
-                if (messageBody.compareTo("exit") == 0) break;
-                Map<String, Object> headersBinding = new HashMap<>();
-                for (;;) {
-                    String headerKey=readline("Qual o header key (exit to finish)?");
-                    if (headerKey.compareTo("exit") == 0) break;
-                    String headerValue = readline("Qual o valor header "+ headerKey +"?");
-                    headersBinding.put(headerKey,headerValue);
-                }
-                AMQP.BasicProperties properties = new AMQP.BasicProperties()
-                        .builder().headers(headersBinding).build();
 
-                for (Object str : properties.getHeaders().values())
-                    System.out.println(str);
-                channel.basicPublish(exchangeName, "", properties, messageBody.getBytes());
+                    // Routing keys for different topics
+                    String routingKeySport = "ALIMENTAR.#";
+
+                    // Messages for different topics
+                    String messageSport = "Let's talk about sports!";
+                    String messageTech = "New technology trends.";
+
+                    // Publish messages with routing keys
+                    channel.basicPublish(EXCHANGE_NAME, routingKeySport, null, messageSport.getBytes());
+                    System.out.println(" [x] Sent '" + routingKeySport + "':'" + messageSport + "'");
+
+                    String input = readline("Exit(y/n): ");
+                    if (input.equals("y")) {
+                        break;
+                    }
             }
             channel.close();
             connection.close();
-
         } catch (Exception ex) {
             ex.printStackTrace();
-
         }
     }
 
