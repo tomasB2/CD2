@@ -157,7 +157,7 @@ public class RabbitConfigurator {
     }
 
     static void BindQueuesToExchangeWithHeaders() throws IOException {
-        // https://jstobigdata.com/rabbitmq/headers-exchange-in-amqp-rabbitmq/
+// https://jstobigdata.com/rabbitmq/headers-exchange-in-amqp-rabbitmq/
 //        here are 2 types of headers matching allowed which are any (similar to logical OR) or all (similar to logical AND).
 //        They are represented in the bindings as { "x-match", "any" ..} or { “x-match”, “all” ..}.
 //        The x-match = any means, a message sent to the Exchange should contain at least one of the headers that Queue is linked with, then the message will be routed to the Queue.

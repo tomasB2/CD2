@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class PointOfSale {
-    private static final String EXCHANGE_NAME = "Sales_Exchange";
+    private static String IP_BROKER="localhost";
+
+    private static String exchangeName = null;
 
     public static void main(String[] args) {
         try {
@@ -19,30 +21,25 @@ public class PointOfSale {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 
-            //EXCHANGE_NAME = readline("Exchange name");
+            // Send message to exchange
+            exchangeName = readline("Exchange name");
 
             for (;;) {
+                String messageBody = readline("Qual o texto da mensagem (exit to finish)?");
+                if (messageBody.compareTo("exit") == 0) break;
+                for (;;) {
+                    String topic=readline("Qual o Topic key (exit to finish)?");
+                    if (topic.compareTo("exit") == 0) break;
+                    channel.basicPublish(exchangeName, topic,null , messageBody.getBytes());
+                }
 
-                    // Routing keys for different topics
-                    String routingKeySport = "ALIMENTAR.#";
-
-                    // Messages for different topics
-                    String messageSport = "Let's talk about sports!";
-                    String messageTech = "New technology trends.";
-
-                    // Publish messages with routing keys
-                    channel.basicPublish(EXCHANGE_NAME, routingKeySport, null, messageSport.getBytes());
-                    System.out.println(" [x] Sent '" + routingKeySport + "':'" + messageSport + "'");
-
-                    String input = readline("Exit(y/n): ");
-                    if (input.equals("y")) {
-                        break;
-                    }
             }
             channel.close();
             connection.close();
+
         } catch (Exception ex) {
             ex.printStackTrace();
+
         }
     }
 
