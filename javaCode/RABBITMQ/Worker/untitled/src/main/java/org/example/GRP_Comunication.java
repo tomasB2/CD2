@@ -1,19 +1,19 @@
 package org.example;
-
 import serviceToWriteStubs.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-public class WriteToFiles {
+
+public class GRP_Comunication {
 
     private static ManagedChannel channel;
 
     private static FileServiceGrpc.FileServiceBlockingStub blockingStub;
     private static FileServiceGrpc.FileServiceStub noBlockStub;
 
-    public WriteToFiles() {
+    public GRP_Comunication() {
         channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
@@ -38,5 +38,7 @@ public class WriteToFiles {
     public void shutdown() throws InterruptedException {
         channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
     }
-    
+
 }
+
+
