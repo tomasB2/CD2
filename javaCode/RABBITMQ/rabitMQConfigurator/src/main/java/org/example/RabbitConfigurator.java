@@ -171,7 +171,7 @@ public class RabbitConfigurator {
         String headersString = readline("Quais os valores de headers separados por espaço?");
         String[] listHeaders = headersString.split(" ");
         HeadersBindingAny.put("x-match", "any"); //Match any of the header
-        HeadersBindingAll.put("x-match", "all"); //Match all of the headers
+        HeadersBindingAll.put("x-match", "all"); //Match all the headers
 
         for (int i = 0; i < listHeaders.length; i++) {
             HeadersBindingAny.put("h" + i, listHeaders[i]);
@@ -181,7 +181,7 @@ public class RabbitConfigurator {
         channel.queueBind(queueNameAny, exchangeName, "", HeadersBindingAny);
         channel.queueBind(queueNameAll, exchangeName, "", HeadersBindingAll);
         Map<String, Object> HeadersBindingSpec = new HashMap<>();
-        HeadersBindingSpec.put("x-match", "all"); //Match all of the headers
+        HeadersBindingSpec.put("x-match", "all"); //Match all the headers
         String queueNameSpec = readline("Nome do Queue para receber messages with specific header?");
         String hkey = readline("Qual a key header especifico");
         String hvalue = readline("Qual o valor do header especifico");

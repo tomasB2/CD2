@@ -31,12 +31,12 @@ public class PointOfSale {
                 String quant = readline("Qual a quantidade (exit to finish)?");
                 String precoUnitario = readline("Qual o preco unitario (exit to finish)?");
                 String iva = readline("Qual o iva (exit to finish)?");
-                if (data.compareTo("exit")!=0 ||
-                        codigoProduto.compareTo("exit")!=0 ||
-                        nomeProduto.compareTo("exit")!=0 ||
-                        quant.compareTo("exit")!=0 ||
-                        precoUnitario.compareTo("exit")!=0 ||
-                        iva.compareTo("exit")!=0) break;
+                if (data.compareTo("exit")==0 ||
+                        codigoProduto.compareTo("exit")==0 ||
+                        nomeProduto.compareTo("exit")==0 ||
+                        quant.compareTo("exit")==0 ||
+                        precoUnitario.compareTo("exit")==0 ||
+                        iva.compareTo("exit")==0) break;
                 Product product = new Product(data, Integer.parseInt(codigoProduto), nomeProduto, Integer.parseInt(quant), Double.parseDouble(precoUnitario), Double.parseDouble(iva));
                 // convert product to json object
                 JSONObject jsonObject = new JSONObject(product);
@@ -44,8 +44,9 @@ public class PointOfSale {
                     String topic=readline("Qual o Topic key (exit to finish)?");
                     if (topic.compareTo("exit") == 0) break;
                     channel.basicPublish(exchangeName, topic,null , jsonObject.toString().getBytes());
+                    break;
                 }
-
+            System.out.println("Message Sent");
             }
             channel.close();
             connection.close();
