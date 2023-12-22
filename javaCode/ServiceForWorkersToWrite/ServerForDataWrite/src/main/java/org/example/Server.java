@@ -5,7 +5,6 @@ import com.google.protobuf.ByteString;
 import io.grpc.ServerBuilder;
 import serviceToWriteStubs.*;
 import io.grpc.stub.StreamObserver;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,15 +12,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 public class Server extends FileServiceGrpc.FileServiceImplBase {
 
     private static String currentResume = "resume";
 
+    static Channel channel;
+
     private static String path = "D:\\ISEL\\MEIC\\CD\\trab2\\a\\";
     private static int svcPort = 8501;
     public static void main(String[] args) {
         try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost("34.163.78.25"); factory.setPort(5672);
+
+            Connection connection = factory.newConnection();
+            channel = connection.createChannel();
             if (args.length > 0) svcPort = Integer.parseInt(args[0]);
             io.grpc.Server svc = ServerBuilder
                     .forPort(svcPort)
@@ -92,11 +102,12 @@ public class Server extends FileServiceGrpc.FileServiceImplBase {
         String formattedDateTime = currentDateTime.format(formatter);
         currentResume = "resume-" + formattedDateTime;
 
-        // send resume order to workers
+
 
         try {
+            channel.basicPublish("EX", "BROD",null , "null".getBytes());
             Thread.sleep(10000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
 
