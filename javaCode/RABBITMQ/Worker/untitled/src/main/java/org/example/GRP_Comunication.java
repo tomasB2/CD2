@@ -22,7 +22,7 @@ public class GRP_Comunication {
         workerFile = "worker-" + wf;
     }
 
-    public FileResponse writeToFile(String data) {
+    public FileResponse writeToFile(String data, String s) {
         return blockingStub.writeToFile(FileRequest.newBuilder()
                 .setFileName(workerFile)
                 .setFileData(data)
